@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+    .hero {
+        background: url('{% static "images/restaurant-bg.jpg" %}') center/cover no-repeat;
+        height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+    }
+    .contact-section, .booking-section {
+        background: #f8f9fa;
+        padding: 50px;
+        border-radius: 10px;
+    }
+    .card {
+        height: 100%;
+    }
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+</style>
+
+<!-- Фон ресторана -->
+<div class="hero">
+    <h1 class="fw-bold">Добро пожаловать в наш ресторан!</h1>
+</div>
+
+<div class="container text-center mt-5">
+    <p class="text-muted">{{ homepage_content.description|default:"Описание ресторана пока не добавлено." }}</p>
+
+    <!-- Блюда -->
+    <div class="row mt-4">
+        {% for dish in menu_items %}
+        <div class="col-md-4 d-flex align-items-stretch">
+            <div class="card shadow-sm">
+                {% if dish.image %}
+                    <img src="{{ dish.image.url }}" class="card-img-top" alt="{{ dish.name }}">
+                {% else %}
+                    <img src="{% static 'menu_images/default.jpg' %}" class="card-img-top" alt="Изображение отсутствует">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="fw-bold">{{ dish.name }}</h5>
+                    <p>{{ dish.description }}</p>
+                    <p class="fw-bold text-success">{{ dish.price }} сум</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Блок бронирования -->
+    <div class="booking-section text-center mt-5">
+        <h2>Забронируйте столик</h2>
+        <p>Выберите удобное время и место, чтобы насладиться нашей кухней.</p>
+        <a href="{% url 'reservations:booking' %}" class="btn btn-success">Забронировать</a>
+    </div>
+</div>
+
+<!-- Контактная информация -->
+<div class="container mt-5">
+    <div class="contact-section">
+        <h2>Контакты</h2>
+        <p><strong>Адрес:</strong> {{ restaurant_info.address }}</p>
+        <p><strong>Телефон:</strong> {{ restaurant_info.phone }}</p>
+        <p><strong>Email:</strong> {{ restaurant_info.email }}</p>
+
+        <h2 class="mt-4">Свяжитесь с нами</h2>
+        <form>
+            <div class="mb-3">
+                <label class="form-label">Ваше имя</label>
+                <input type="text" class="form-control" placeholder="Введите ваше имя">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Ваш email</label>
+                <input type="email" class="form-control" placeholder="Введите ваш email">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Сообщение</label>
+                <textarea class="form-control" rows="4" placeholder="Введите сообщение"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Отправить</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

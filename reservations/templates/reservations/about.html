@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <h1 class="fw-bold">О ресторане</h1>
+
+    <section class="mt-4">
+        <h2 class="fw-bold">Наша история</h2>
+        <p>Мы начали свою деятельность в 2010 году с целью создать уютное место, где каждый сможет насладиться
+            изысканными блюдами.</p>
+    </section>
+
+    <section class="mt-4">
+        <h2 class="fw-bold">Наша миссия и ценности</h2>
+        <p>Мы стремимся предоставлять гостям лучшие кулинарные впечатления, используя только свежие и качественные
+            продукты.</p>
+    </section>
+
+    <section class="mt-4">
+        <h2 class="fw-bold">Наша команда</h2>
+        <div class="row">
+            {% for member in team_members %}
+            <div class="col-md-4 text-center">
+                <img src="{{ member.photo.url }}" class="img-fluid rounded-circle" alt="{{ member.name }}">
+                <h4 class="mt-2">{{ member.name }}</h4>
+                <p>{{ member.position }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+{% endblock %}

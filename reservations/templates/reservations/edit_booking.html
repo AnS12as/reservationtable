@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="fw-bold">Редактировать бронирование</h2>
+    <p class="text-muted">Измените параметры вашего бронирования.</p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        {% if form.errors %}
+            <div class="alert alert-danger">
+                <strong>Ошибка!</strong> Пожалуйста, исправьте ошибки в форме.
+            </div>
+        {% endif %}
+
+        <div class="mb-3">
+            <label class="form-label">Дата</label>
+            {{ form.date }}
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Время</label>
+            {{ form.time }}
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Столик</label>
+            {{ form.table }}
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Количество гостей</label>
+            {{ form.guests }}
+        </div>
+
+        <button type="submit" class="btn btn-success">💾 Сохранить</button>
+        <a href="{% url 'reservations:my_bookings' %}" class="btn btn-secondary">🔙 Отмена</a>
+    </form>
+</div>
+{% endblock %}
