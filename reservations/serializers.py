@@ -9,4 +9,5 @@ class TableSerializer(serializers.ModelSerializer):
 class BookingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
-        fields = '__all__'
+        fields = ["id", "name", "phone", "table", "date", "time", "guests", "status"]
+

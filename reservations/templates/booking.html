@@ -3,29 +3,40 @@
 <div class="container mt-5">
     <h1 class="fw-bold text-center">Забронировать столик</h1>
 
-    <form method="POST" class="mt-4">
+    <form method="post">
         {% csrf_token %}
+
         <div class="mb-3">
-            <label class="form-label">Выберите столик</label>
-            <select class="form-select" name="table">
-                {% for table in tables %}
-                <option value="{{ table.id }}">{{ table }}</option>
-                {% endfor %}
-            </select>
+            <label for="id_name" class="form-label">Ваше имя</label>
+            {{ form.name }}
         </div>
+
         <div class="mb-3">
-            <label class="form-label">Дата</label>
-            <input type="date" class="form-control" name="date" required>
+            <label for="id_phone" class="form-label">Телефон</label>
+            {{ form.phone }}
         </div>
+
         <div class="mb-3">
-            <label class="form-label">Время</label>
-            <input type="time" class="form-control" name="time" required>
+            <label for="id_table" class="form-label">Выберите столик</label>
+            {{ form.table }}
         </div>
+
         <div class="mb-3">
-            <label class="form-label">Количество гостей</label>
-            <input type="number" class="form-control" name="guests" min="1" required>
+            <label for="id_date" class="form-label">Дата бронирования</label>
+            {{ form.date }}
         </div>
-        <button type="submit" class="btn btn-success w-100">Забронировать</button>
+
+        <div class="mb-3">
+            <label for="id_time" class="form-label">Время бронирования</label>
+            {{ form.time }}
+        </div>
+
+        <div class="mb-3">
+            <label for="id_guests" class="form-label">Количество гостей</label>
+            {{ form.guests }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Забронировать</button>
     </form>
 </div>
 {% endblock %}

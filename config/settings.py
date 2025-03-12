@@ -17,11 +17,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'drf_yasg',
+    'django_celery_beat',
     'rest_framework',
     'rest_framework_simplejwt',
     'reservations',
     'users',
+
 ]
 
 MIDDLEWARE = [
@@ -123,3 +125,7 @@ LOGOUT_REDIRECT_URL = "/"  # После выхода – на главную с�
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
+# Настройки Celery
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'

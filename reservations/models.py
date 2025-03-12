@@ -23,7 +23,9 @@ class Booking(models.Model):
         ('rejected', 'Отклонено'),
     ]
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь", null=True, blank=True)
+    name = models.CharField(max_length=100, verbose_name="Имя клиента", default="Неизвестный")
+    phone = models.CharField(max_length=20, verbose_name="Телефон", default="Нет телефона")
     table = models.ForeignKey(Table, on_delete=models.CASCADE, verbose_name="Столик")
     date = models.DateField(verbose_name="Дата")
     time = models.TimeField(verbose_name="Время")
@@ -31,11 +33,12 @@ class Booking(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending', verbose_name="Статус брони")
 
     def __str__(self):
-        return f"Бронь {self.user.username} на {self.date} в {self.time}"
+        return f"Бронь {self.name} на {self.date} в {self.time}"
 
     class Meta:
         verbose_name = "Бронирование"
         verbose_name_plural = "Бронирования"
+
 
 
 class RestaurantInfo(models.Model):

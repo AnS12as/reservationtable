@@ -1,10 +1,12 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets, permissions
 from .models import Table, Booking, RestaurantInfo, TeamMember, HomePageContent, MenuItem
 from .serializers import TableSerializer, BookingSerializer
 from .forms import BookingForm
+from .tasks import send_booking_reminders
 
 
 # Главная страница
@@ -48,7 +50,7 @@ def booking_view(request):
             booking.user = request.user
             booking.status = "pending"
             booking.save()
-            messages.success(request, f"Спасибо за бронирование! Мы ждем вас {booking.date} в {booking.time}.")
+            messages.success(request, f"Спасибо за бронирование, {booking.name}! Мы ждем вас {booking.date} в {booking.time}.")
             return redirect("reservations:my_bookings")
     else:
         form = BookingForm()
@@ -63,7 +65,6 @@ def my_bookings_view(request):
     bookings = Booking.objects.filter(user=request.user)
     print("Бронирования пользователя:", bookings)  # Debug
     return render(request, "reservations/my_bookings.html", {"bookings": bookings})
-
 
 
 # Подтверждение бронирования (администратор)
@@ -125,6 +126,8 @@ class BookingViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
+        if self.request.user.is_anonymous:
+            return Booking.objects.none()  # Возвращаем пустой QuerySet для анонимных пользователей
         return Booking.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
