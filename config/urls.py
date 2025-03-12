@@ -33,8 +33,7 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path("contact/", contact_view, name="contact"),
     path('api/', include(router.urls)),
-    path('', include('reservations.urls', namespace='reservations')),
-    path("api/v1/", include("reservations.urls")),
+    path("api/v1/reservations/", include("reservations.urls")),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 
     path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="redoc-ui"),

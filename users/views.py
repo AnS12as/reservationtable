@@ -18,7 +18,7 @@ def register_view(request):
             user = form.save()
             login(request, user)  # Автоматически логиним после регистрации
             messages.success(request, "Регистрация прошла успешно! Добро пожаловать!")
-            return redirect("my_bookings")  # Перенаправляем в личный кабинет
+            return redirect("users:my_bookings")  # Исправленный редирект с namespace
         else:
             messages.error(request, "Ошибка регистрации. Проверьте введенные данные.")
     else:

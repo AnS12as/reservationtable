@@ -1,13 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets, permissions
 from .models import Table, Booking, RestaurantInfo, TeamMember, HomePageContent, MenuItem
 from .serializers import TableSerializer, BookingSerializer
 from .forms import BookingForm
-from .tasks import send_booking_reminders
-
 
 # Главная страница
 def home(request):
@@ -18,10 +15,8 @@ def home(request):
         "menu_items": menu_items
     })
 
-
 def contact_view(request):
     return render(request, "contact.html")
-
 
 # О нас
 def about(request):
@@ -32,13 +27,11 @@ def about(request):
         "team_members": team_members
     })
 
-
 # Список бронирований (для администратора)
 @login_required
 def reservation_list(request):
     bookings = Booking.objects.all()
     return render(request, "reservations/reservation_list.html", {"bookings": bookings})
-
 
 # Функция бронирования
 @login_required
@@ -51,21 +44,18 @@ def booking_view(request):
             booking.status = "pending"
             booking.save()
             messages.success(request, f"Спасибо за бронирование, {booking.name}! Мы ждем вас {booking.date} в {booking.time}.")
-            return redirect("reservations:my_bookings")
+            return redirect("reservations:my_bookings")  # Добавлен namespace
     else:
         form = BookingForm()
 
     tables = Table.objects.all()
     return render(request, "booking.html", {"form": form, "tables": tables})
 
-
 # Страница "Мои бронирования"
-
+@login_required
 def my_bookings_view(request):
     bookings = Booking.objects.filter(user=request.user)
-    print("Бронирования пользователя:", bookings)  # Debug
     return render(request, "reservations/my_bookings.html", {"bookings": bookings})
-
 
 # Подтверждение бронирования (администратор)
 @login_required
@@ -76,7 +66,6 @@ def confirm_booking(request, booking_id):
     messages.success(request, "✅ Бронирование подтверждено!")
     return redirect("reservations:reservation_list")
 
-
 # Отклонение бронирования (администратор)
 @login_required
 def reject_booking(request, booking_id):
@@ -86,15 +75,13 @@ def reject_booking(request, booking_id):
     messages.error(request, "❌ Бронирование отклонено.")
     return redirect("reservations:reservation_list")
 
-
 # Отмена бронирования (пользователь)
 @login_required
 def cancel_booking(request, booking_id):
     booking = get_object_or_404(Booking, id=booking_id, user=request.user)
     booking.delete()
     messages.success(request, "✅ Ваше бронирование успешно отменено.")
-    return redirect("reservations:my_bookings")
-
+    return redirect("reservations:my_bookings")  # Добавлен namespace
 
 # Изменение бронирования (пользователь)
 @login_required
@@ -106,19 +93,17 @@ def edit_booking(request, booking_id):
         if form.is_valid():
             form.save()
             messages.success(request, "Бронирование успешно обновлено!")
-            return redirect("reservations:my_bookings")
+            return redirect("reservations:my_bookings")  # Добавлен namespace
     else:
         form = BookingForm(instance=booking)
 
     return render(request, "reservations/edit_booking.html", {"form": form, "booking": booking})
-
 
 # API ViewSets
 class TableViewSet(viewsets.ModelViewSet):
     queryset = Table.objects.all()
     serializer_class = TableSerializer
     permission_classes = [permissions.AllowAny]
-
 
 class BookingViewSet(viewsets.ModelViewSet):
     serializer_class = BookingSerializer
