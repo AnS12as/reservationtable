@@ -34,6 +34,9 @@ class BookingModelTest(TestCase):
             username="testuser", password="testpassword"
         )
         self.table = Table.objects.create(number=2, seats=6)
+
+        print(f"Создан пользователь: {self.user} (username: {self.user.username})")
+
         self.booking = Booking.objects.create(
             user=self.user,
             table=self.table,
@@ -43,8 +46,15 @@ class BookingModelTest(TestCase):
             status="pending",
         )
 
+        # Принудительно загружаем объект из базы данных
+        self.booking.refresh_from_db()
+
+        print(f"Создана бронь: {self.booking} (user: {self.booking.user})")
+
     def test_booking_creation(self):
         """Проверяем, создается ли бронирование"""
+        self.booking.refresh_from_db()  # Перезагружаем объект
+        self.assertIsNotNone(self.booking.user, "Пользователь не должен быть None")
         self.assertEqual(self.booking.user.username, "testuser")
         self.assertEqual(self.booking.table.number, 2)
         self.assertEqual(self.booking.guests, 3)
@@ -52,10 +62,13 @@ class BookingModelTest(TestCase):
 
     def test_booking_str(self):
         """Проверяем строковое представление модели Booking"""
-        self.assertEqual(
-            str(self.booking),
-            f"Бронь testuser на {self.booking.date} в {self.booking.time}",
-        )
+        self.booking.refresh_from_db()  # Перезагружаем объект
+
+        print(f"В тесте booking.user: {self.booking.user} (username: {self.booking.user.username if self.booking.user else 'None'})")
+
+        expected_str = f"Бронь {self.booking.user.username} на {self.booking.date} в {self.booking.time}"
+        actual_str = str(self.booking)
+        self.assertEqual(actual_str, expected_str, f"Ожидалось: {expected_str}, но получено: {actual_str}")
 
 
 class RestaurantInfoModelTest(TestCase):

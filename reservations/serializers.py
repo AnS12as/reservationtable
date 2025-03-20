@@ -9,6 +9,8 @@ class TableSerializer(serializers.ModelSerializer):
 
 
 class BookingSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
+
     class Meta:
         model = Booking
-        fields = ["id", "name", "phone", "table", "date", "time", "guests", "status"]
+        fields = ["id", "user", "name", "phone", "table", "date", "time", "guests", "status"]

@@ -13,7 +13,6 @@ DEBUG = os.getenv("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost").split(",")
 
-
 AUTH_USER_MODEL = "users.CustomUser"
 
 INSTALLED_APPS = [
@@ -29,6 +28,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "reservations",
     "users",
+    'pytest_django',
 ]
 
 MIDDLEWARE = [
@@ -130,7 +130,6 @@ CSRF_TRUSTED_ORIGINS = [
 LOGIN_URL = "/users/login/"
 LOGIN_REDIRECT_URL = "/booking/"  # После входа перенаправлять на бронирование
 LOGOUT_REDIRECT_URL = "/"  # После выхода – на главную страницу
-
 
 # Настройки Celery
 CELERY_BROKER_URL = os.getenv("REDIS_URL", "redis://redis:6379/0")

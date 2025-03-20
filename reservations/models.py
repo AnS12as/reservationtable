@@ -48,7 +48,7 @@ class Booking(models.Model):
     )
 
     def __str__(self):
-        return f"Бронь {self.name} на {self.date} в {self.time}"
+        return f"Бронь {self.user.username if self.user else self.name} на {self.date} в {self.time}"
 
     class Meta:
         verbose_name = "Бронирование"

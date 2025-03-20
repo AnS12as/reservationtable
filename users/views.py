@@ -10,7 +10,7 @@ from .forms import CustomUserCreationForm
 User = get_user_model()
 
 
-# 📌 ✅ Регистрация пользователя
+#  Регистрация пользователя
 def register_view(request):
     if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
@@ -18,7 +18,7 @@ def register_view(request):
             user = form.save()
             login(request, user)  # Автоматически логиним после регистрации
             messages.success(request, "Регистрация прошла успешно! Добро пожаловать!")
-            return redirect("users:my_bookings")  # Исправленный редирект с namespace
+            return redirect("users:my_bookings")
         else:
             messages.error(request, "Ошибка регистрации. Проверьте введенные данные.")
     else:
@@ -27,7 +27,7 @@ def register_view(request):
     return render(request, "register.html", {"form": form})
 
 
-# 📌 ✅ Вход в систему
+#  Вход в систему
 def login_view(request):
     if request.method == "POST":
         form = AuthenticationForm(request, data=request.POST)
@@ -44,12 +44,12 @@ def login_view(request):
     return render(request, "login.html", {"form": form})
 
 
-# 📌 ✅ Личный кабинет пользователя
+#  Личный кабинет пользователя
 def profile_view(request):
     return render(request, "profile.html")
 
 
-# 📌 ✅ Выход из системы
+#  Выход из системы
 def logout_view(request):
     logout(request)
     messages.success(request, "Вы вышли из системы! Возвращайтесь снова!")

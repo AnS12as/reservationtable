@@ -24,5 +24,5 @@ urlpatterns = [
     path("reject-booking/<int:booking_id>/", reject_booking, name="reject_booking"),
     path("edit-booking/<int:booking_id>/", edit_booking, name="edit_booking"),
     path("cancel-booking/<int:booking_id>/", cancel_booking, name="cancel_booking"),
-    path("my_bookings/", my_bookings_view, name="my_bookings"),
+    path("my-bookings/", my_bookings_view, name="my_bookings"),
 ]

@@ -15,13 +15,15 @@ class BookingFormTest(TestCase):
     def test_valid_form(self):
         """Проверка валидной формы бронирования"""
         form_data = {
-            "table": self.table.id,  # ✅ Добавляем ID столика
+            "table": self.table.id,
             "date": date.today(),
             "time": time(18, 30),
             "guests": 2,
+            "name": "Тестовый пользователь",
+            "phone": "1234567890",
         }
         form = BookingForm(data=form_data)
 
-        print(form.errors)  # ✅ Посмотрим, какие ошибки
+        print(form.errors)
 
-        self.assertTrue(form.is_valid())  # Ожидаем, что форма будет валидной
+        self.assertTrue(form.is_valid())

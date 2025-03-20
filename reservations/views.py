@@ -61,12 +61,15 @@ def booking_view(request):
                 request,
                 f"Спасибо за бронирование, {booking.name}! Мы ждем вас {booking.date} в {booking.time}.",
             )
-            return redirect("reservations:my_bookings")  # Добавлен namespace
+            return redirect("reservations:my_bookings")
+        else:
+            print(form.errors)
+
     else:
         form = BookingForm()
 
     tables = Table.objects.all()
-    return render(request, "booking.html", {"form": form, "tables": tables})
+    return render(request, "reservations/booking.html", {"form": form, "tables": tables})
 
 
 # Страница "Мои бронирования"
@@ -102,7 +105,7 @@ def cancel_booking(request, booking_id):
     booking = get_object_or_404(Booking, id=booking_id, user=request.user)
     booking.delete()
     messages.success(request, "✅ Ваше бронирование успешно отменено.")
-    return redirect("reservations:my_bookings")  # Добавлен namespace
+    return redirect("reservations:my_bookings")
 
 
 # Изменение бронирования (пользователь)
@@ -115,13 +118,14 @@ def edit_booking(request, booking_id):
         if form.is_valid():
             form.save()
             messages.success(request, "Бронирование успешно обновлено!")
-            return redirect("reservations:my_bookings")  # Добавлен namespace
+            return redirect("reservations:my_bookings")
+        else:
+            print(form.errors)
+
     else:
         form = BookingForm(instance=booking)
 
-    return render(
-        request, "reservations/edit_booking.html", {"form": form, "booking": booking}
-    )
+    return render(request, "reservations/edit_booking.html", {"form": form, "booking": booking})
 
 
 # API ViewSets
@@ -140,7 +144,7 @@ class BookingViewSet(viewsets.ModelViewSet):
         if self.request.user.is_anonymous:
             return (
                 Booking.objects.none()
-            )  # Возвращаем пустой QuerySet для анонимных пользователей
+            )
         return Booking.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):

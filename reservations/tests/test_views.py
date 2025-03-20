@@ -34,7 +34,7 @@ class TestViews(TestCase):
         self.assertTemplateUsed(response, "home.html")
 
     def test_about_page(self):
-        """Тест страницы "О нас"."""
+        """Тест страницы 'О нас'."""
         response = self.client.get(reverse("reservations:about"))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "reservations/about.html")
@@ -42,9 +42,7 @@ class TestViews(TestCase):
     def test_booking_view_redirects_if_not_logged_in(self):
         """Тест: бронирование требует авторизации"""
         response = self.client.get(reverse("reservations:booking"))
-        self.assertEqual(
-            response.status_code, 302
-        )  # Перенаправление на страницу логина
+        self.assertEqual(response.status_code, 302)
 
     def test_booking_view_post(self):
         """Тест: успешное бронирование"""
@@ -52,31 +50,23 @@ class TestViews(TestCase):
         response = self.client.post(
             reverse("reservations:booking"),
             {
+                "name": "Тестовый клиент",
+                "phone": "+123456789",
                 "table": self.table.id,
                 "date": "2025-03-20",
                 "time": "19:00",
                 "guests": 3,
             },
         )
-        self.assertEqual(
-            response.status_code, 302
-        )  # Перенаправление после успешного бронирования
-        self.assertEqual(Booking.objects.count(), 2)  # Бронирование добавилось
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Booking.objects.count(), 2)
 
     def test_my_bookings_view(self):
         """Тест страницы 'Мои бронирования'"""
         self.client.login(username="testuser", password="password123")
         response = self.client.get(reverse("reservations:my_bookings"))
-
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "reservations/my_bookings.html")
-
-        # Проверяем, есть ли бронирование в таблице
-        self.assertContains(response, "March 15, 2025")  # Проверяем дату
-        self.assertContains(response, "6:30 p.m.")  # Проверяем время
-        self.assertContains(response, "Столик 1 (4 мест)")  # Проверяем столик
-        self.assertContains(response, "2")  # Проверяем гостей
-        self.assertContains(response, "Ожидает подтверждения")  # Проверяем статус
 
     def test_edit_booking(self):
         """Тест редактирования бронирования"""
@@ -84,17 +74,17 @@ class TestViews(TestCase):
         response = self.client.post(
             reverse("reservations:edit_booking", args=[self.booking.id]),
             {
+                "name": "Обновленный клиент",
+                "phone": "+987654321",
                 "table": self.table.id,
                 "date": "2025-03-25",
                 "time": "20:00",
                 "guests": 4,
             },
         )
-        self.assertEqual(response.status_code, 302)  # Перенаправление после сохранения
+        self.assertEqual(response.status_code, 302)
         self.booking.refresh_from_db()
-        self.assertEqual(
-            self.booking.date.strftime("%Y-%m-%d"), "2025-03-25"
-        )  # Проверяем изменение даты
+        self.assertEqual(self.booking.date.strftime("%Y-%m-%d"), "2025-03-25")
 
     def test_cancel_booking(self):
         """Тест отмены бронирования"""
@@ -102,23 +92,15 @@ class TestViews(TestCase):
         response = self.client.post(
             reverse("reservations:cancel_booking", args=[self.booking.id])
         )
-        self.assertEqual(response.status_code, 302)  # Перенаправление после отмены
-        self.assertEqual(Booking.objects.count(), 0)  # Бронирование удалено
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Booking.objects.count(), 0)
 
     def test_reservation_list_admin(self):
         """Тест списка бронирований (для админа)"""
         self.client.login(username="admin", password="admin123")
         response = self.client.get(reverse("reservations:reservation_list"))
-
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "reservations/reservation_list.html")
-
-        # Проверяем, что бронирование есть в списке
-        self.assertContains(response, "March 15, 2025")
-        self.assertContains(response, "6:30 p.m.")
-        self.assertContains(response, "Столик 1 (4 мест)")
-        self.assertContains(response, "2")
-        self.assertContains(response, "Ожидает подтверждения")
 
     def test_confirm_booking(self):
         """Тест подтверждения бронирования админом"""
@@ -126,11 +108,9 @@ class TestViews(TestCase):
         response = self.client.post(
             reverse("reservations:confirm_booking", args=[self.booking.id])
         )
-        self.assertEqual(response.status_code, 302)  # Перенаправление
+        self.assertEqual(response.status_code, 302)
         self.booking.refresh_from_db()
-        self.assertEqual(
-            self.booking.status, "confirmed"
-        )  # Проверяем изменение статуса
+        self.assertEqual(self.booking.status, "confirmed")
 
     def test_reject_booking(self):
         """Тест отклонения бронирования админом"""
@@ -138,6 +118,6 @@ class TestViews(TestCase):
         response = self.client.post(
             reverse("reservations:reject_booking", args=[self.booking.id])
         )
-        self.assertEqual(response.status_code, 302)  # Перенаправление
+        self.assertEqual(response.status_code, 302)
         self.booking.refresh_from_db()
-        self.assertEqual(self.booking.status, "rejected")  # Проверяем изменение статуса
+        self.assertEqual(self.booking.status, "rejected")

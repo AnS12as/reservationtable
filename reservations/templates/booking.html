@@ -3,40 +3,58 @@
 <div class="container mt-5">
     <h1 class="fw-bold text-center">Забронировать столик</h1>
 
-    <form method="post">
+    <form method="post" class="mt-4">
         {% csrf_token %}
 
         <div class="mb-3">
             <label for="id_name" class="form-label">Ваше имя</label>
             {{ form.name }}
+            {% if form.name.errors %}
+                <div class="text-danger">{{ form.name.errors }}</div>
+            {% endif %}
         </div>
 
         <div class="mb-3">
             <label for="id_phone" class="form-label">Телефон</label>
             {{ form.phone }}
+            {% if form.phone.errors %}
+                <div class="text-danger">{{ form.phone.errors }}</div>
+            {% endif %}
         </div>
 
         <div class="mb-3">
             <label for="id_table" class="form-label">Выберите столик</label>
             {{ form.table }}
+            {% if form.table.errors %}
+                <div class="text-danger">{{ form.table.errors }}</div>
+            {% endif %}
         </div>
 
         <div class="mb-3">
             <label for="id_date" class="form-label">Дата бронирования</label>
             {{ form.date }}
+            {% if form.date.errors %}
+                <div class="text-danger">{{ form.date.errors }}</div>
+            {% endif %}
         </div>
 
         <div class="mb-3">
             <label for="id_time" class="form-label">Время бронирования</label>
             {{ form.time }}
+            {% if form.time.errors %}
+                <div class="text-danger">{{ form.time.errors }}</div>
+            {% endif %}
         </div>
 
         <div class="mb-3">
             <label for="id_guests" class="form-label">Количество гостей</label>
             {{ form.guests }}
+            {% if form.guests.errors %}
+                <div class="text-danger">{{ form.guests.errors }}</div>
+            {% endif %}
         </div>
 
-        <button type="submit" class="btn btn-primary">Забронировать</button>
+        <button type="submit" class="btn btn-primary w-100">Забронировать</button>
     </form>
 </div>
 {% endblock %}

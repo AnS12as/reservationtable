@@ -1,18 +1,17 @@
-# Используем Python 3.10
-FROM python:3.10
+# Используем официальный образ Python
+FROM python:3.12
 
-# Переменная для отключения буферизации вывода
-ENV PYTHONUNBUFFERED=1
-
-# Создаём рабочую директорию
+# Устанавливаем рабочую директорию внутри контейнера
 WORKDIR /app
 
-# Копируем файл зависимостей и устанавливаем их
-COPY requirements.txt /app/
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Копируем весь проект в контейнер
+# Копируем файлы проекта
 COPY . /app/
 
-# Запускаем Gunicorn
-CMD ["gunicorn", "restaurant_booking.wsgi:application", "--bind", "0.0.0.0:8000"]
+# Устанавливаем зависимости
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Открываем порт 8000
+EXPOSE 8000
+
+# Запускаем Django сервер
+CMD ["gunicorn", "reservationtable.wsgi:application", "--bind", "0.0.0.0:8000"]

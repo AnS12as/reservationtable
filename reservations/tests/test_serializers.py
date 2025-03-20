@@ -16,9 +16,7 @@ class TableSerializerTest(TestCase):
 class BookingSerializerTest(TestCase):
     def setUp(self):
         """Создание тестовых данных"""
-        self.user = User.objects.create_user(
-            username="testuser", password="testpassword"
-        )
+        self.user = User.objects.create_user(username="testuser", password="testpassword")
         self.table = Table.objects.create(number=2, seats=2)
 
     def test_booking_serializer_valid_data(self):
@@ -29,16 +27,22 @@ class BookingSerializerTest(TestCase):
             date=date.today(),
             time=time(18, 0),
             guests=2,
-            status="pending",
+            status="pending"
         )
         serializer = BookingSerializer(booking)
+
+        print("Фактические данные сериализатора:", serializer.data)
+
         expected_data = {
             "id": booking.id,
             "user": self.user.id,
+            "name": "Неизвестный",
+            "phone": "Нет телефона",
             "table": self.table.id,
             "date": str(date.today()),
             "time": "18:00:00",
             "guests": 2,
             "status": "pending",
         }
+
         self.assertEqual(serializer.data, expected_data)
