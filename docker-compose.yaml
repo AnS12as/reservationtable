@@ -1,14 +1,14 @@
 version: '3.8'
 
 services:
-  db:
-    image: postgres:17
+  postgres_db:
+    image: postgres:15
     container_name: postgres_db
     restart: always
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    env_file:
-      - .env
+    environment:
+      POSTGRES_DB: reservation_db
+      POSTGRES_USER: reservation_user
+      POSTGRES_PASSWORD: 1014
     ports:
       - "5432:5432"
 
@@ -17,7 +17,7 @@ services:
     container_name: django_app
     restart: always
     depends_on:
-      - db
+      - postgres_db
     volumes:
       - static_volume:/app/static
     env_file:
