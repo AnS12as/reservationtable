@@ -2,36 +2,50 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from rest_framework import viewsets, permissions
-from .models import Table, Booking, RestaurantInfo, TeamMember, HomePageContent, MenuItem
+from .models import (
+    Table,
+    Booking,
+    RestaurantInfo,
+    TeamMember,
+    HomePageContent,
+    MenuItem,
+)
 from .serializers import TableSerializer, BookingSerializer
 from .forms import BookingForm
+
 
 # Главная страница
 def home(request):
     homepage_content = HomePageContent.objects.first()
     menu_items = MenuItem.objects.all()
-    return render(request, 'home.html', {
-        "homepage_content": homepage_content,
-        "menu_items": menu_items
-    })
+    return render(
+        request,
+        "home.html",
+        {"homepage_content": homepage_content, "menu_items": menu_items},
+    )
+
 
 def contact_view(request):
     return render(request, "contact.html")
+
 
 # О нас
 def about(request):
     restaurant_info = RestaurantInfo.objects.first()
     team_members = TeamMember.objects.all()
-    return render(request, "reservations/about.html", {
-        "restaurant_info": restaurant_info,
-        "team_members": team_members
-    })
+    return render(
+        request,
+        "reservations/about.html",
+        {"restaurant_info": restaurant_info, "team_members": team_members},
+    )
+
 
 # Список бронирований (для администратора)
 @login_required
 def reservation_list(request):
     bookings = Booking.objects.all()
     return render(request, "reservations/reservation_list.html", {"bookings": bookings})
+
 
 # Функция бронирования
 @login_required
@@ -43,7 +57,10 @@ def booking_view(request):
             booking.user = request.user
             booking.status = "pending"
             booking.save()
-            messages.success(request, f"Спасибо за бронирование, {booking.name}! Мы ждем вас {booking.date} в {booking.time}.")
+            messages.success(
+                request,
+                f"Спасибо за бронирование, {booking.name}! Мы ждем вас {booking.date} в {booking.time}.",
+            )
             return redirect("reservations:my_bookings")  # Добавлен namespace
     else:
         form = BookingForm()
@@ -51,11 +68,13 @@ def booking_view(request):
     tables = Table.objects.all()
     return render(request, "booking.html", {"form": form, "tables": tables})
 
+
 # Страница "Мои бронирования"
 @login_required
 def my_bookings_view(request):
     bookings = Booking.objects.filter(user=request.user)
     return render(request, "reservations/my_bookings.html", {"bookings": bookings})
+
 
 # Подтверждение бронирования (администратор)
 @login_required
@@ -66,6 +85,7 @@ def confirm_booking(request, booking_id):
     messages.success(request, "✅ Бронирование подтверждено!")
     return redirect("reservations:reservation_list")
 
+
 # Отклонение бронирования (администратор)
 @login_required
 def reject_booking(request, booking_id):
@@ -75,6 +95,7 @@ def reject_booking(request, booking_id):
     messages.error(request, "❌ Бронирование отклонено.")
     return redirect("reservations:reservation_list")
 
+
 # Отмена бронирования (пользователь)
 @login_required
 def cancel_booking(request, booking_id):
@@ -82,6 +103,7 @@ def cancel_booking(request, booking_id):
     booking.delete()
     messages.success(request, "✅ Ваше бронирование успешно отменено.")
     return redirect("reservations:my_bookings")  # Добавлен namespace
+
 
 # Изменение бронирования (пользователь)
 @login_required
@@ -97,13 +119,17 @@ def edit_booking(request, booking_id):
     else:
         form = BookingForm(instance=booking)
 
-    return render(request, "reservations/edit_booking.html", {"form": form, "booking": booking})
+    return render(
+        request, "reservations/edit_booking.html", {"form": form, "booking": booking}
+    )
+
 
 # API ViewSets
 class TableViewSet(viewsets.ModelViewSet):
     queryset = Table.objects.all()
     serializer_class = TableSerializer
     permission_classes = [permissions.AllowAny]
+
 
 class BookingViewSet(viewsets.ModelViewSet):
     serializer_class = BookingSerializer
@@ -112,7 +138,9 @@ class BookingViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         if self.request.user.is_anonymous:
-            return Booking.objects.none()  # Возвращаем пустой QuerySet для анонимных пользователей
+            return (
+                Booking.objects.none()
+            )  # Возвращаем пустой QuerySet для анонимных пользователей
         return Booking.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):

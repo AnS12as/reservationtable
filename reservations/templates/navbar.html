@@ -18,25 +18,25 @@
                 </li>
 
                 {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link text-uppercase" href="{% url 'reservations:my_bookings' %}">
-                        Мои бронирования
-                    </a>
-                </li>
-                <li class="nav-item d-flex align-items-center">
-                    <form method="post" action="{% url 'users:logout' %}">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-sm btn-danger ms-2">
-                            🚪 Выйти
-                        </button>
-                    </form>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-uppercase" href="{% url 'reservations:my_bookings' %}">
+                            Мои бронирования
+                        </a>
+                    </li>
+                    <li class="nav-item d-flex align-items-center">
+                        <form method="post" action="{% url 'users:logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-danger ms-2">
+                                🚪 Выйти
+                            </button>
+                        </form>
+                    </li>
                 {% else %}
-                <li class="nav-item">
-                    <a class="nav-link text-uppercase" href="{% url 'users:login' %}">
-                        🔑 Вход
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-uppercase" href="{% url 'users:login' %}">
+                            🔑 Вход
+                        </a>
+                    </li>
                 {% endif %}
             </ul>
         </div>

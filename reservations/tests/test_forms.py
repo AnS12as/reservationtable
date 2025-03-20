@@ -3,10 +3,13 @@ from django.test import TestCase
 from reservations.forms import BookingForm
 from reservations.models import Table, User
 
+
 class BookingFormTest(TestCase):
     def setUp(self):
         """Создаем тестового пользователя и столик"""
-        self.user = User.objects.create_user(username="testuser", password="password123")
+        self.user = User.objects.create_user(
+            username="testuser", password="password123"
+        )
         self.table = Table.objects.create(number=1, seats=4)
 
     def test_valid_form(self):

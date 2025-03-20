@@ -1,6 +1,13 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
-from reservations.models import Table, Booking, RestaurantInfo, TeamMember, MenuItem, HomePageContent
+from reservations.models import (
+    Table,
+    Booking,
+    RestaurantInfo,
+    TeamMember,
+    MenuItem,
+    HomePageContent,
+)
 from datetime import date, time
 from decimal import Decimal
 
@@ -23,7 +30,9 @@ class TableModelTest(TestCase):
 
 class BookingModelTest(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username="testuser", password="testpassword")
+        self.user = User.objects.create_user(
+            username="testuser", password="testpassword"
+        )
         self.table = Table.objects.create(number=2, seats=6)
         self.booking = Booking.objects.create(
             user=self.user,
@@ -31,7 +40,7 @@ class BookingModelTest(TestCase):
             date=date.today(),
             time=time(18, 30),
             guests=3,
-            status="pending"
+            status="pending",
         )
 
     def test_booking_creation(self):
@@ -43,7 +52,10 @@ class BookingModelTest(TestCase):
 
     def test_booking_str(self):
         """Проверяем строковое представление модели Booking"""
-        self.assertEqual(str(self.booking), f"Бронь testuser на {self.booking.date} в {self.booking.time}")
+        self.assertEqual(
+            str(self.booking),
+            f"Бронь testuser на {self.booking.date} в {self.booking.time}",
+        )
 
 
 class RestaurantInfoModelTest(TestCase):
@@ -53,7 +65,7 @@ class RestaurantInfoModelTest(TestCase):
             description="Описание ресторана",
             address="Улица Тестовая, 123",
             phone="+7 999 888 77 66",
-            email="test@example.com"
+            email="test@example.com",
         )
 
     def test_restaurant_creation(self):
@@ -69,9 +81,7 @@ class RestaurantInfoModelTest(TestCase):
 class TeamMemberModelTest(TestCase):
     def setUp(self):
         self.team_member = TeamMember.objects.create(
-            name="Иван Иванов",
-            position="Шеф-повар",
-            photo="team_photos/chef.jpg"
+            name="Иван Иванов", position="Шеф-повар", photo="team_photos/chef.jpg"
         )
 
     def test_team_member_creation(self):
@@ -90,7 +100,7 @@ class MenuItemModelTest(TestCase):
             name="Паста",
             description="Вкусная паста",
             image="menu_images/pasta.jpg",
-            price=Decimal("599.99")
+            price=Decimal("599.99"),
         )
 
     def test_menu_item_creation(self):
@@ -108,7 +118,7 @@ class HomePageContentModelTest(TestCase):
         self.homepage_content = HomePageContent.objects.create(
             welcome_text="Добро пожаловать!",
             description="Лучший ресторан в городе",
-            background_image="homepage_images/bg.jpg"
+            background_image="homepage_images/bg.jpg",
         )
 
     def test_homepage_content_creation(self):

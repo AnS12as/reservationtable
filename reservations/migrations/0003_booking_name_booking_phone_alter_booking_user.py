@@ -8,24 +8,34 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('reservations', '0002_alter_restaurantinfo_address'),
+        ("reservations", "0002_alter_restaurantinfo_address"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='booking',
-            name='name',
-            field=models.CharField(default='Неизвестный', max_length=100, verbose_name='Имя клиента'),
+            model_name="booking",
+            name="name",
+            field=models.CharField(
+                default="Неизвестный", max_length=100, verbose_name="Имя клиента"
+            ),
         ),
         migrations.AddField(
-            model_name='booking',
-            name='phone',
-            field=models.CharField(default='Нет телефона', max_length=20, verbose_name='Телефон'),
+            model_name="booking",
+            name="phone",
+            field=models.CharField(
+                default="Нет телефона", max_length=20, verbose_name="Телефон"
+            ),
         ),
         migrations.AlterField(
-            model_name='booking',
-            name='user',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='Пользователь'),
+            model_name="booking",
+            name="user",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="Пользователь",
+            ),
         ),
     ]

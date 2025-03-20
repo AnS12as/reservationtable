@@ -1,13 +1,14 @@
 from rest_framework import serializers
 from .models import Table, Booking
 
+
 class TableSerializer(serializers.ModelSerializer):
     class Meta:
         model = Table
-        fields = '__all__'
+        fields = "__all__"
+
 
 class BookingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
         fields = ["id", "name", "phone", "table", "date", "time", "guests", "status"]
-

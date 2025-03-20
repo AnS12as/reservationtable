@@ -15,86 +15,217 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='HomePageContent',
+            name="HomePageContent",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('welcome_text', models.CharField(max_length=255, verbose_name='Приветственный текст')),
-                ('description', models.TextField(verbose_name='Описание ресторана')),
-                ('background_image', models.ImageField(blank=True, null=True, upload_to='homepage_images/', verbose_name='Фон главной страницы')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "welcome_text",
+                    models.CharField(
+                        max_length=255, verbose_name="Приветственный текст"
+                    ),
+                ),
+                ("description", models.TextField(verbose_name="Описание ресторана")),
+                (
+                    "background_image",
+                    models.ImageField(
+                        blank=True,
+                        null=True,
+                        upload_to="homepage_images/",
+                        verbose_name="Фон главной страницы",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Контент главной страницы',
-                'verbose_name_plural': 'Контент главной страницы',
+                "verbose_name": "Контент главной страницы",
+                "verbose_name_plural": "Контент главной страницы",
             },
         ),
         migrations.CreateModel(
-            name='MenuItem',
+            name="MenuItem",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100, verbose_name='Название блюда')),
-                ('description', models.TextField(verbose_name='Описание')),
-                ('image', models.ImageField(default='menu_images/default.jpg', upload_to='menu_images/', verbose_name='Фото блюда')),
-                ('price', models.DecimalField(decimal_places=2, max_digits=10, verbose_name='Цена')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(max_length=100, verbose_name="Название блюда"),
+                ),
+                ("description", models.TextField(verbose_name="Описание")),
+                (
+                    "image",
+                    models.ImageField(
+                        default="menu_images/default.jpg",
+                        upload_to="menu_images/",
+                        verbose_name="Фото блюда",
+                    ),
+                ),
+                (
+                    "price",
+                    models.DecimalField(
+                        decimal_places=2, max_digits=10, verbose_name="Цена"
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Пункт меню',
-                'verbose_name_plural': 'Меню',
+                "verbose_name": "Пункт меню",
+                "verbose_name_plural": "Меню",
             },
         ),
         migrations.CreateModel(
-            name='RestaurantInfo',
+            name="RestaurantInfo",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=200, verbose_name='Название ресторана')),
-                ('description', models.TextField(verbose_name='Описание')),
-                ('address', models.CharField(default='Не указан', max_length=255)),
-                ('phone', models.CharField(default='+7 898 176 54 67', max_length=20, verbose_name='Телефон')),
-                ('email', models.EmailField(default='info@example.com', max_length=254, verbose_name='Email')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(max_length=200, verbose_name="Название ресторана"),
+                ),
+                ("description", models.TextField(verbose_name="Описание")),
+                ("address", models.CharField(default="Не указан", max_length=255)),
+                (
+                    "phone",
+                    models.CharField(
+                        default="+7 898 176 54 67",
+                        max_length=20,
+                        verbose_name="Телефон",
+                    ),
+                ),
+                (
+                    "email",
+                    models.EmailField(
+                        default="info@example.com", max_length=254, verbose_name="Email"
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Информация о ресторане',
-                'verbose_name_plural': 'Информация о ресторане',
+                "verbose_name": "Информация о ресторане",
+                "verbose_name_plural": "Информация о ресторане",
             },
         ),
         migrations.CreateModel(
-            name='Table',
+            name="Table",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('number', models.PositiveIntegerField(unique=True, verbose_name='Номер столика')),
-                ('seats', models.PositiveIntegerField(verbose_name='Количество мест')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "number",
+                    models.PositiveIntegerField(
+                        unique=True, verbose_name="Номер столика"
+                    ),
+                ),
+                ("seats", models.PositiveIntegerField(verbose_name="Количество мест")),
             ],
             options={
-                'verbose_name': 'Столик',
-                'verbose_name_plural': 'Столики',
+                "verbose_name": "Столик",
+                "verbose_name_plural": "Столики",
             },
         ),
         migrations.CreateModel(
-            name='TeamMember',
+            name="TeamMember",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100, verbose_name='Имя')),
-                ('position', models.CharField(max_length=100, verbose_name='Должность')),
-                ('photo', models.ImageField(upload_to='team_photos/', verbose_name='Фото')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=100, verbose_name="Имя")),
+                (
+                    "position",
+                    models.CharField(max_length=100, verbose_name="Должность"),
+                ),
+                (
+                    "photo",
+                    models.ImageField(upload_to="team_photos/", verbose_name="Фото"),
+                ),
             ],
             options={
-                'verbose_name': 'Член команды',
-                'verbose_name_plural': 'Команда',
+                "verbose_name": "Член команды",
+                "verbose_name_plural": "Команда",
             },
         ),
         migrations.CreateModel(
-            name='Booking',
+            name="Booking",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('date', models.DateField(verbose_name='Дата')),
-                ('time', models.TimeField(verbose_name='Время')),
-                ('guests', models.PositiveIntegerField(verbose_name='Количество гостей')),
-                ('status', models.CharField(choices=[('pending', 'Ожидает подтверждения'), ('confirmed', 'Подтверждено'), ('rejected', 'Отклонено')], default='pending', max_length=10, verbose_name='Статус брони')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='Пользователь')),
-                ('table', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='reservations.table', verbose_name='Столик')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("date", models.DateField(verbose_name="Дата")),
+                ("time", models.TimeField(verbose_name="Время")),
+                (
+                    "guests",
+                    models.PositiveIntegerField(verbose_name="Количество гостей"),
+                ),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("pending", "Ожидает подтверждения"),
+                            ("confirmed", "Подтверждено"),
+                            ("rejected", "Отклонено"),
+                        ],
+                        default="pending",
+                        max_length=10,
+                        verbose_name="Статус брони",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                        verbose_name="Пользователь",
+                    ),
+                ),
+                (
+                    "table",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="reservations.table",
+                        verbose_name="Столик",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Бронирование',
-                'verbose_name_plural': 'Бронирования',
+                "verbose_name": "Бронирование",
+                "verbose_name_plural": "Бронирования",
             },
         ),
     ]

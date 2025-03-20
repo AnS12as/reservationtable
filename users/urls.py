@@ -9,4 +9,5 @@ urlpatterns = [
     path("login/", login_view, name="login"),
     path("logout/", LogoutView.as_view(), name="logout"),
     path("profile/", profile_view, name="profile"),
-    path("my_bookings/", my_bookings_view, name="my_bookings")]
+    path("my_bookings/", my_bookings_view, name="my_bookings"),
+]

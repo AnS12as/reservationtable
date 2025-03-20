@@ -1,20 +1,18 @@
-# Используем официальный образ Python
-FROM python:3.12
+# Используем Python 3.10
+FROM python:3.10
 
-# Устанавливаем рабочую директорию в контейнере
+# Переменная для отключения буферизации вывода
+ENV PYTHONUNBUFFERED=1
+
+# Создаём рабочую директорию
 WORKDIR /app
 
-# Копируем зависимости
-COPY requirements.txt .
-
-# Устанавливаем зависимости
+# Копируем файл зависимостей и устанавливаем их
+COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Копируем все файлы проекта в контейнер
-COPY . .
+# Копируем весь проект в контейнер
+COPY . /app/
 
-# Открываем порт 8000
-EXPOSE 8000
-
-# Выполняем миграции и запускаем сервер
-CMD ["sh", "-c", "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn config.wsgi:application --bind 0.0.0.0:8000"]
+# Запускаем Gunicorn
+CMD ["gunicorn", "restaurant_booking.wsgi:application", "--bind", "0.0.0.0:8000"]

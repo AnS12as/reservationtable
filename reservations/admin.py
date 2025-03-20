@@ -1,5 +1,12 @@
 from django.contrib import admin
-from .models import Table, Booking, RestaurantInfo, TeamMember, HomePageContent, MenuItem
+from .models import (
+    Table,
+    Booking,
+    RestaurantInfo,
+    TeamMember,
+    HomePageContent,
+    MenuItem,
+)
 
 
 @admin.register(Table)
