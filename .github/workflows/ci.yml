@@ -1,6 +1,6 @@
 name: Django CI/CD Pipeline
 
-on: [push, pull_request]
+on: [ push, pull_request ]
 
 jobs:
   lint:
@@ -70,14 +70,15 @@ jobs:
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.4
         with:
-          ssh-private-key: "${{ secrets.SSH_KEY }}"
+          ssh-private-key: |
+            ${{ secrets.SSH_KEY }}
 
       - name: Deploy to server
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-            echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
-            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }}
-            docker stop myapp || true
-            docker rm myapp || true
-            docker run -d --name myapp -p 80:8000 --restart unless-stopped ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }}
+            echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | sudo docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+            sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }}
+            sudo docker stop myapp || true
+            sudo docker rm myapp || true
+            sudo docker run -d --name myapp -p 80:8000 --restart unless-stopped ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }}
           EOF
