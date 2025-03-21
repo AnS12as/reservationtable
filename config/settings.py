@@ -74,7 +74,7 @@ DATABASES = {
         "NAME": os.getenv("DB_NAME", "reservation_db"),
         "USER": os.getenv("DB_USER", "reservation_user"),
         "PASSWORD": os.getenv("DB_PASSWORD", "1014"),
-        "HOST": os.getenv("DB_HOST", "postgres_db"),
+        "HOST": os.getenv("DB_HOST", "db"),
         "PORT": os.getenv("DB_PORT", "5432"),
     }
 }
